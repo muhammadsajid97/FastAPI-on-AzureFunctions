@@ -32,5 +32,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: fastapi_app
-        path: ./fastapi_app.zip
+        path: fastapi_app.zip
         retention-days: 1

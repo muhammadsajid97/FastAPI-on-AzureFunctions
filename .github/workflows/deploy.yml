@@ -15,6 +15,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: fastapi_app
+        path: fastapi_app.zip
 
     - name: Unzip FastAPI app
       run: |

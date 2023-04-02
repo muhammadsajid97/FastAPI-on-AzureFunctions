@@ -30,3 +30,4 @@ jobs:
       with:
         name: fastapi_app
         path: fastapi_app.zip
+        retention-days: 1

@@ -43,7 +43,7 @@ jobs:
         
     - name: Deploy to Azure Functions
       run: |
-        az functionapp config container set --name allibrain --docker-custom-image-name brainapis.azurecr.io/fastapi_app:${{ github.sha }} --docker-registry-server-url https://brainapis.azurecr.io --docker-registry-server-user 583ff8fe-7b92-44cd-aa9f-f62c8af750b1 --docker-registry-server-password sJj8Q~MGJGaFtynOAGqR8P2CvQHbyFp6oEDgpbsg
+        az functionapp config container set --name allibrain --resource-group heyalli_group --docker-custom-image-name brainapis.azurecr.io/fastapi_app:${{ github.sha }} --docker-registry-server-url https://brainapis.azurecr.io --docker-registry-server-user 583ff8fe-7b92-44cd-aa9f-f62c8af750b1 --docker-registry-server-password sJj8Q~MGJGaFtynOAGqR8P2CvQHbyFp6oEDgpbsg
 
     - name: Azure logout
       run: |

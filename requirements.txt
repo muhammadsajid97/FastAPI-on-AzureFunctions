@@ -8,6 +8,8 @@ googletrans==4.0.0rc1
 geocoder==1.38.1
 openai==0.10.5
 pickle-mixin==1.0.2
+uvicorn==0.15.0
 pydantic==1.9.0
 azure-servicebus==7.8.3
 opencensus-ext-azure==1.1.9
+pytest==7.2.2

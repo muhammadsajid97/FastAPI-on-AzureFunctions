@@ -37,12 +37,10 @@ jobs:
         docker build . -t brainapis.azurecr.io/fastapi-cd:${{ github.sha }}
         docker push brainapis.azurecr.io/fastapi-cd:${{ github.sha }}
         
-    - name: Deploy to App Service
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'allibrainapp'
-        images: 'brainapis.azurecr.io/fastapi-cd:${{ github.sha }}'
-        
+    - name: Deploy to Azure Functions
+      run: |
+        az functionapp config container set --name allibrain --docker-custom-image-name brainapis.azurecr.io/fastapi_app:${{ github.sha }} --docker-registry-server-url https://brainapis.azurecr.io --docker-registry-server-user 583ff8fe-7b92-44cd-aa9f-f62c8af750b1 --docker-registry-server-password sJj8Q~MGJGaFtynOAGqR8P2CvQHbyFp6oEDgpbsg
+
     - name: Azure logout
       run: |
         az logout

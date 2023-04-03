@@ -24,7 +24,7 @@ jobs:
       with:
         registry: https://brainapis.azurecr.io/
         username: ${{ secrets.AzureAppService_ContainerUsername_544781f2ae9948fab59ef32a51ade3f8 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f64bc71638b8484d83ac46ba24e7c59a }}
+        password: 4Hc8Q~XXgxOK8Osc_plM~_8ge_ZfevZPhiCa6aq~
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2

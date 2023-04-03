@@ -14,10 +14,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Login via Azure CLI
-      run: |
-        az cloud set -n azurecloud
-        az login --service-principal --username "583ff8fe-7b92-44cd-aa9f-f62c8af750b1" --password "sJj8Q~MGJGaFtynOAGqR8P2CvQHbyFp6oEDgpbsg" --tenant "8e5c9539-0a3e-4a96-b90e-0586ea2533de"
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Install Azure Functions Core Tools
       uses: Azure/functions-action@v1
@@ -38,3 +38,7 @@ jobs:
     - name: Build and deploy function app
       run: |
         func azure functionapp publish allibrain --python
+
+    - name: Azure logout
+      run: |
+        az logout

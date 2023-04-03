@@ -18,12 +18,14 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+    
     - name: Install Azure Functions Core Tools
-      uses: Azure/functions-action@v1
-      with:
-        app-name: allibrain
-        appSettings: <publishData><publishProfile profileName="allibrain - Web Deploy" publishMethod="MSDeploy" publishUrl="allibrain.scm.azurewebsites.net:443" msdeploySite="allibrain" userName="$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="allibrain - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-077.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="allibrain\$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="allibrain - Zip Deploy" publishMethod="ZipDeploy" publishUrl="allibrain.scm.azurewebsites.net:443" userName="$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="allibrain - ReadOnly - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-077dr.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="allibrain\$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>
+    run: |
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+      sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/azure-cli.list'
+      sudo apt-get update
+      sudo apt-get install azure-functions-core-tools
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -35,9 +37,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build and deploy function app
+    - name: Build function app
       run: |
         func azure functionapp publish allibrain --python
+
+    - name: Deploy function app
+      uses: Azure/functions-action@v1
+      with:
+        app-name: allibrain
+        appSettings: <publishData><publishProfile profileName="allibrain - Web Deploy" publishMethod="MSDeploy" publishUrl="allibrain.scm.azurewebsites.net:443" msdeploySite="allibrain" userName="$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="allibrain - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-077.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="allibrain\$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="allibrain - Zip Deploy" publishMethod="ZipDeploy" publishUrl="allibrain.scm.azurewebsites.net:443" userName="$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="allibrain - ReadOnly - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-077dr.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="allibrain\$allibrain" userPWD="w2HlWnQCZ39HswMFpPG1kxJavcfdN2WfLPPzKruurJXRSd5zzAaPpXjy8Hv9" destinationAppUrl="https://allibrain.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="http://windows.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>
 
     - name: Azure logout
       run: |

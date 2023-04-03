@@ -14,15 +14,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install Azure Functions Core Tools
+      uses: Microsoft/azure-functions-core-tools@v4
+      with:
+        version: '3'
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-
-    - name: Install Azure Functions Core Tools
-      uses: Azure/functions-core-tools-action@v1
-      with:
-        version: '3.x'
 
     - name: Install dependencies
       run: |
